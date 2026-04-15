@@ -26,6 +26,7 @@ const Page = () => {
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("projects")
   const [index, setIndex] = useState(0)
+  const [clickCount, setClickCount] = useState(0);
 
   const { theme, isDark } = useAppTheme();
 
@@ -50,7 +51,7 @@ const Page = () => {
 
 
   useEffect(() => {
-    const sections = ["home", "about", "projects", "education", "contact"]
+    const sections = ["home", "about", "showcase", "education", "contact"]
 
     const handleScroll = () => {
       sections.forEach((id) => {
@@ -78,6 +79,18 @@ const Page = () => {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    if (clickCount === 3) {
+      window.location.href = "/login";
+    }
+
+    const timer = setTimeout(() => {
+      setClickCount(0);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [clickCount]);
+
 
   return (
     <div className={`${theme.background} ${theme.text}`}>
@@ -92,13 +105,20 @@ const Page = () => {
         <div className="flex justify-between items-center px-6 md:px-16 py-4">
 
           {/* LOGO */}
-          <h1 className={`text-xl font-bold ${theme.text}`}>
+          {/* <h1 className={`text-xl font-bold ${theme.text}`}>
+            RC
+          </h1> */}
+
+          <h1
+            className={`text-xl font-bold ${theme.text}`}
+            onClick={() => setClickCount((prev) => prev + 1)}
+          >
             RC
           </h1>
 
           {/* DESKTOP MENU */}
           <motion.nav layout className={`hidden md:flex gap-8 ${theme.text}`}>
-            {["home", "about", "projects", "education", "contact"].map((item, i) => (
+            {["home", "about", "showcase", "education", "contact"].map((item, i) => (
               <motion.a
                 key={item}
                 href={`#${item}`}
@@ -148,7 +168,7 @@ const Page = () => {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className={`md:hidden px-6 pb-6 flex flex-col gap-4 border-t ${theme.border} ${theme.background}`}
           >
-            {["home", "about", "projects", "education", "contact"].map((item) => (
+            {["home", "about", "showcase", "education", "contact"].map((item) => (
               <a
                 key={item}
                 href={`#${item}`}
@@ -386,7 +406,32 @@ const Page = () => {
                 >
                   <Icon style={{ color: theme.primary }} className="mb-2" />
                   <p className={`text-sm ${theme.mutedText}`}>{item.label}</p>
-                  <p className={theme.text}>{item.value}</p>
+                  {/* <p className={theme.text}>{item.value}</p> */}
+                  <p className={`${theme.text} w-full text-center`}>
+                    {item.label === "Email" && item.value ? (
+                      (() => {
+                        const [name, domain] = item.value.split("@");
+
+                        return (
+                          <>
+                            {/* Mobile view */}
+                            <span className="block sm:hidden">
+                              {name}@
+                              <br />
+                              {domain}
+                            </span>
+
+                            {/* Desktop view */}
+                            <span className="hidden sm:inline">
+                              {item.value}
+                            </span>
+                          </>
+                        );
+                      })()
+                    ) : (
+                      item.value
+                    )}
+                  </p>
                 </motion.div>
               );
             })}
@@ -505,6 +550,7 @@ const Page = () => {
 
       {/* SHOWCASE */}
       <motion.div
+        id="showcase"
         className={`px-6 md:px-16 py-12 md:py-16 relative overflow-hidden ${theme.background}`}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -603,8 +649,7 @@ const Page = () => {
       {activeTab === "projects" && (
         <section
           id="projects"
-          className={`px-6 md:px-16 pb-12 md:pb-16 relative overflow-hidden ${isDark ? "bg-[#0B0F19]" : "bg-white"
-            }`}
+          className={`px-6 md:px-16 pb-12 md:pb-16 relative overflow-hidden ${theme.background}`}
         >
           {/* background glow */}
           <div
@@ -736,10 +781,20 @@ const Page = () => {
 
       {/* SKILLS */}
       {activeTab === "skills" && (
-        <section
+        <motion.section
           id="skills"
-          className={`px-6 pb-12 md:pb-16 relative overflow-hidden ${isDark ? "bg-[#0B0F19]" : "bg-white"
-            }`}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.12,
+              },
+            },
+          }}
+          className={`px-6 pb-12 md:pb-16 relative overflow-hidden ${theme.background}`}
         >
 
           {/* glow */}
@@ -755,7 +810,12 @@ const Page = () => {
           <div className="grid md:grid-cols-2 gap-10">
 
             {/* FRONTEND */}
-            <div
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 40 },
+                show: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.6 }}
               className={`rounded-xl p-6 transition ${isDark
                 ? "bg-[#020617] border border-[#1E293B]"
                 : "bg-white border border-gray-200 shadow-md hover:shadow-[0_0_20px_rgba(20,94,251,0.25)]"
@@ -765,7 +825,17 @@ const Page = () => {
                 Frontend
               </h3>
 
-              <div className="space-y-4">
+              <motion.div
+                className="space-y-4"
+                variants={{
+                  hidden: {},
+                  show: {
+                    transition: {
+                      staggerChildren: 0.1,
+                    },
+                  },
+                }}
+              >
                 {skillsFrontend.map((skill) => {
 
                   const getIcon = (name: string) => {
@@ -797,14 +867,18 @@ const Page = () => {
                   };
 
                   return (
-                    <div
+                    <motion.div
                       key={skill._id}
-                      className={`flex items-center justify-between p-4 rounded-lg transition ${isDark
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        show: { opacity: 1, y: 0 },
+                      }}
+                      transition={{ duration: 0.4 }}
+                      className={`flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-lg transition gap-3 ${isDark
                         ? "bg-[#020617] border border-[#1E293B] hover:border-[#145EFB]/50"
                         : "bg-gray-50 border border-gray-200 hover:border-[#145EFB] hover:shadow-[0_0_12px_rgba(20,94,251,0.2)]"
                         }`}
                     >
-                      {/* LEFT */}
                       <div className="flex items-center gap-3">
                         <span className="text-xl">
                           {getIcon(skill.skillName)}
@@ -814,15 +888,17 @@ const Page = () => {
                         </span>
                       </div>
 
-                      {/* RIGHT */}
-                      <div className="flex items-center gap-2 w-40">
+                      <div className="flex items-center gap-2 w-full sm:w-40">
                         <div
                           className={`flex-1 h-[4px] rounded relative ${isDark ? "bg-[#1E293B]" : "bg-gray-200"
                             }`}
                         >
-                          <div
+                          <motion.div
                             className="absolute top-0 left-0 h-[4px] bg-[#145EFB] rounded"
-                            style={{ width: `${skill.level}%` }}
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${skill.level}%` }}
+                            transition={{ duration: 1 }}
+                            viewport={{ once: true }}
                           />
                         </div>
 
@@ -833,14 +909,19 @@ const Page = () => {
                           {skill.level}%
                         </span>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* BACKEND */}
-            <div
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 40 },
+                show: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.6 }}
               className={`rounded-xl p-6 transition ${isDark
                 ? "bg-[#020617] border border-[#1E293B]"
                 : "bg-white border border-gray-200 shadow-md hover:shadow-[0_0_20px_rgba(20,94,251,0.25)]"
@@ -850,7 +931,17 @@ const Page = () => {
                 Backend
               </h3>
 
-              <div className="space-y-4">
+              <motion.div
+                className="space-y-4"
+                variants={{
+                  hidden: {},
+                  show: {
+                    transition: {
+                      staggerChildren: 0.1,
+                    },
+                  },
+                }}
+              >
                 {skillsBackend.map((skill) => {
 
                   const getIcon = (name: string) => {
@@ -870,14 +961,18 @@ const Page = () => {
                   };
 
                   return (
-                    <div
+                    <motion.div
                       key={skill._id}
-                      className={`flex items-center justify-between p-4 rounded-lg transition ${isDark
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        show: { opacity: 1, y: 0 },
+                      }}
+                      transition={{ duration: 0.4 }}
+                      className={`flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-lg transition gap-3 ${isDark
                         ? "bg-[#020617] border border-[#1E293B] hover:border-[#145EFB]/50"
                         : "bg-gray-50 border border-gray-200 hover:border-[#145EFB] hover:shadow-[0_0_12px_rgba(20,94,251,0.2)]"
                         }`}
                     >
-                      {/* LEFT */}
                       <div className="flex items-center gap-3">
                         <span className="text-xl">
                           {getIcon(skill.skillName)}
@@ -887,15 +982,17 @@ const Page = () => {
                         </span>
                       </div>
 
-                      {/* RIGHT */}
-                      <div className="flex items-center gap-2 w-40">
+                      <div className="flex items-center gap-2 w-full sm:w-40">
                         <div
                           className={`flex-1 h-[4px] rounded relative ${isDark ? "bg-[#1E293B]" : "bg-gray-200"
                             }`}
                         >
-                          <div
+                          <motion.div
                             className="absolute top-0 left-0 h-[4px] bg-[#145EFB] rounded"
-                            style={{ width: `${skill.level}%` }}
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${skill.level}%` }}
+                            transition={{ duration: 1 }}
+                            viewport={{ once: true }}
                           />
                         </div>
 
@@ -906,34 +1003,45 @@ const Page = () => {
                           {skill.level}%
                         </span>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
           </div>
-        </section>
+        </motion.section>
       )}
 
 
       {/* EXPERIENCE */}
       {activeTab === "experience" && (
-        <section
+        <motion.section
           id="experience"
-          className={`px-6 md:px-16 pb-12 md:pb-16 relative overflow-hidden ${isDark ? "bg-[#0B0F19]" : "bg-white"
-            }`}
+          initial="hidden"
+          animate="show"
+          variants={{
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.2,
+              },
+            },
+          }}
+          className={`px-6 md:px-16 pb-12 md:pb-16 relative overflow-hidden ${theme.background}`}
         >
 
           {/* glow */}
-          <div
+          <motion.div
             className="absolute top-10 right-10 w-72 h-72 blur-3xl rounded-full"
             style={{
               backgroundColor: isDark
                 ? "rgba(20,94,251,0.1)"
                 : "rgba(20,94,251,0.08)",
             }}
-          ></div>
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 6, repeat: Infinity }}
+          />
 
           {/* timeline */}
           <div
@@ -942,24 +1050,41 @@ const Page = () => {
           >
 
             {experience.map((exp) => (
-              <div key={exp._id} className="relative group">
+              <motion.div
+                key={exp._id}
+                className="relative group"
+                variants={{
+                  hidden: { opacity: 0, x: -40 },
+                  show: {
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.6 },
+                  },
+                }}
+              >
 
                 {/* DOT */}
-                <div
+                <motion.div
                   className={`absolute -left-[14px] top-6 w-7 h-7 rounded-full flex items-center justify-center ${isDark
                     ? "bg-[#020617] border border-[#145EFB] shadow-[0_0_10px_rgba(20,94,251,0.6)]"
                     : "bg-white border border-[#145EFB] shadow-md"
                     }`}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.4 }}
                 >
                   <Briefcase size={14} className="text-[#145EFB]" />
-                </div>
+                </motion.div>
 
                 {/* CARD */}
-                <div
+                <motion.div
                   className={`rounded-xl p-6 space-y-4 transition duration-300 ${isDark
                     ? "bg-[#020617] border border-[#1E293B] hover:border-[#145EFB]/40 hover:shadow-[0_0_25px_rgba(20,94,251,0.15)]"
                     : "bg-white border border-gray-200 hover:shadow-[0_0_20px_rgba(20,94,251,0.2)]"
                     }`}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
                 >
 
                   {/* ROLE */}
@@ -1017,30 +1142,35 @@ const Page = () => {
                       }`}
                   >
                     {exp.responsibilities.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2">
+                      <motion.li
+                        key={i}
+                        className="flex items-start gap-2"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                      >
                         <CheckCircle
                           size={14}
                           className="text-[#145EFB] mt-1"
                         />
                         <span>{item}</span>
-                      </li>
+                      </motion.li>
                     ))}
                   </ul>
 
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
 
           </div>
-        </section>
+        </motion.section>
       )}
 
 
       {/* EDUCATION */}
       <section
         id="education"
-        className={`px-6 py-12 md:py-16 relative overflow-hidden ${isDark ? "bg-[#0B0F19]" : "bg-white"
-          }`}
+        className={`px-6 py-12 md:py-16 relative overflow-hidden ${theme.background}`}
       >
         {/* glow */}
         <div
@@ -1153,8 +1283,7 @@ const Page = () => {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
-        className={`px-6 md:px-16 py-12 md:py-16 relative overflow-hidden ${isDark ? "bg-[#0B0F19]" : "bg-white"
-          }`}
+        className={`px-6 md:px-16 py-12 md:py-16 relative overflow-hidden ${theme.background}`}
       >
         {/* glow */}
         <div
