@@ -61,16 +61,8 @@ const Dashboard = () => {
 
                                 {/* Text */}
                                 <div>
-                                    <p className="text-xl">{item.title}</p>
-                                    {/* <h2 className="text-2xl font-semibold mt-1 text-gray-800">
-                                        {item.value}
-                                    </h2> */}
+                                    <p className="text-xl text-black">{item.title}</p>
                                 </div>
-
-                                {/* Icon */}
-                                {/* <div className="p-3 rounded-full bg-[#155DFC]/10 group-hover:bg-[#155DFC] transition duration-300">
-                                    <Icon className="w-7 h-7 text-[#155DFC] group-hover:text-white transition duration-300" />
-                                </div> */}
 
                                 {typeof item.value === "number" && (
                                     <MiniRadialChart value={item.value} />

@@ -93,7 +93,7 @@ const ProjectsPage = () => {
 
                 <Button
                     onClick={() => setOpen(true)}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                    className="flex items-center gap-2 text-white bg-blue-600 hover:bg-blue-700 cursor-pointer"
                 >
                     <Plus size={18} /> Add Project
                 </Button>
@@ -193,8 +193,7 @@ const ProjectsPage = () => {
                                         <a href={item.gitHubURL} target="_blank">
                                             <Button
                                                 size="sm"
-                                                variant="outline"
-                                                className="flex items-center gap-2 cursor-pointer"
+                                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                                             >
                                                 <Code size={16} />
                                                 Source Code
@@ -230,7 +229,10 @@ const ProjectsPage = () => {
                     }
                 }}
             >
-                <DialogContent className="sm:max-w-md" onOpenAutoFocus={(e) => e.preventDefault()}>
+                <DialogContent
+                    className="sm:max-w-lg max-h-[90vh] overflow-y-auto no-scrollbar p-6"
+                    onOpenAutoFocus={(e) => e.preventDefault()}
+                >
                     <DialogHeader>
                         <DialogTitle>
                             {

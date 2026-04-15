@@ -111,7 +111,7 @@ const page = () => {
 
                         setOpen(true)
                     }}
-                    className="flex items-center gap-2 bg-[#155DFC] hover:bg-[#0f4cd1] cursor-pointer"
+                    className="flex items-center gap-2 text-white bg-[#155DFC] hover:bg-[#0f4cd1] cursor-pointer"
                 >
                     + Add Experience
                 </Button>
@@ -240,7 +240,10 @@ const page = () => {
                     }
                 }}
             >
-                <DialogContent className="sm:max-w-md" onOpenAutoFocus={(e) => e.preventDefault()}>
+                <DialogContent
+                    className="sm:max-w-lg max-h-[90vh] overflow-y-auto no-scrollbar p-6"
+                    onOpenAutoFocus={(e) => e.preventDefault()}
+                >
                     <DialogHeader>
                         <DialogTitle>
                             {
@@ -341,10 +344,10 @@ const page = () => {
 
                             {
                                 selectedExperience
-                                    ? <Button type="submit" className="w-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer">
+                                    ? <Button type="submit" className="w-full text-white bg-yellow-500 hover:bg-yellow-400 cursor-pointer">
                                         Update Experience
                                     </Button>
-                                    : <Button type="submit" className="w-full bg-[#155DFC] hover:bg-[#0f4cd1] cursor-pointer">
+                                    : <Button type="submit" className="w-full text-white bg-[#155DFC] hover:bg-[#0f4cd1] cursor-pointer">
                                         Save Experience
                                     </Button>
                             }

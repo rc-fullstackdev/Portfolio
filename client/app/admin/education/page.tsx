@@ -83,7 +83,7 @@ const page = () => {
 
                 <Button
                     onClick={() => setOpen(true)}
-                    className="bg-[#155DFC] hover:bg-[#0f4cd1] cursor-pointer"
+                    className="bg-[#155DFC] hover:bg-[#0f4cd1] text-white cursor-pointer"
                 >
                     + Add Education
                 </Button>
@@ -195,10 +195,10 @@ const page = () => {
 
                             {
                                 selectedEduc
-                                    ? <Button type='submit' className="w-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer" >
+                                    ? <Button type='submit' className="w-full text-white bg-yellow-500 hover:bg-yellow-400 cursor-pointer" >
                                         Update Education
                                     </Button>
-                                    : <Button type='submit' className="w-full bg-[#155DFC] hover:bg-[#0f4cd1] cursor-pointer" >
+                                    : <Button type='submit' className="w-full text-white bg-[#155DFC] hover:bg-[#0f4cd1] cursor-pointer" >
                                         Save Education
                                     </Button>
                             }

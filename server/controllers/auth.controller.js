@@ -22,18 +22,24 @@ exports.sendOTP = asyncHandler(async (req, res) => {
 
     await User.findByIdAndUpdate(admin._id, { otp: hashOTP, otpSendOn: new Date() })
 
-    await sendEmail({
-        email: admin.email,
-        subject: "Login OTP",
-        message: otpTemplate({
-            name: admin.name,
-            otp,
-            sec: process.env.OTP_EXIPIREY,
-            min: process.env.OTP_EXIPIREY / 60,
+    try {
+        await sendEmail({
+            email: admin.email,
+            subject: "Login OTP",
+            message: otpTemplate({
+                name: admin.name,
+                otp,
+                sec: process.env.OTP_EXIPIREY,
+                min: process.env.OTP_EXIPIREY / 60,
+            })
         })
-    })
 
-    res.json({ message: "OTP Send Successfully" })
+        res.json({ message: "OTP Send Successfully" })
+
+    } catch (error) {
+        console.error("EMAIL_ERROR:", error);
+        res.status(500).json({ message: "Failed to send email", error: error.message });
+    }
 })
 
 exports.verifyOTP = asyncHandler(async (req, res) => {
@@ -59,9 +65,12 @@ exports.verifyOTP = asyncHandler(async (req, res) => {
 
     const token = jwt.sign({ _id: result._id }, process.env.JWT_KEY, { expiresIn: "1h" })
 
+    const isProduction = process.env.NODE_ENV === PRODUCTION;
+
     res.cookie("ADMIN", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === PRODUCTION,
+        secure: isProduction ? true : false,
+        sameSite: isProduction ? "none" : "lax",
         maxAge: 1000 * 60 * 60
     })
 
