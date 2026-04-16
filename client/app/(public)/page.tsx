@@ -13,8 +13,10 @@ import {
   useReadPublicAboutInfoQuery,
 } from "@/redux/apis/public.api";
 
-import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt, FaJs, FaGitAlt, } from "react-icons/fa";
-import { SiTypescript, SiMongodb, SiExpress, SiNextdotjs, SiTailwindcss, SiRedux, SiJsonwebtokens, SiBootstrap, SiPostman, SiRender, SiVercel, } from "react-icons/si";
+import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt, FaJs, FaGitAlt, FaGithub, } from "react-icons/fa";
+import { SiTypescript, SiMongodb, SiExpress, SiNextdotjs, SiJsonwebtokens, SiBootstrap, SiPostman, SiRender, SiVercel, SiPostgresql, SiReact, SiTurborepo, SiShadcnui, SiRedux, SiTailwindcss, } from "react-icons/si";
+import { RiTailwindCssFill } from "react-icons/ri";
+
 import { Mail, Phone, MapPin, Calendar, Globe, Briefcase } from "lucide-react";
 import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion"
@@ -780,7 +782,7 @@ const Page = () => {
 
 
       {/* SKILLS */}
-      {activeTab === "skills" && (
+      {/* {activeTab === "skills" && (
         <motion.section
           id="skills"
           initial="hidden"
@@ -797,7 +799,6 @@ const Page = () => {
           className={`px-6 pb-12 md:pb-16 relative overflow-hidden ${theme.background}`}
         >
 
-          {/* glow */}
           <div
             className="absolute top-10 left-10 w-72 h-72 blur-3xl rounded-full"
             style={{
@@ -809,7 +810,6 @@ const Page = () => {
 
           <div className="grid md:grid-cols-2 gap-10">
 
-            {/* FRONTEND */}
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 40 },
@@ -915,7 +915,6 @@ const Page = () => {
               </motion.div>
             </motion.div>
 
-            {/* BACKEND */}
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 40 },
@@ -1011,166 +1010,276 @@ const Page = () => {
 
           </div>
         </motion.section>
-      )}
+      )} */}
 
 
-      {/* EXPERIENCE */}
-      {activeTab === "experience" && (
-        <motion.section
-          id="experience"
-          initial="hidden"
-          animate="show"
-          variants={{
-            hidden: {},
-            show: {
-              transition: {
-                staggerChildren: 0.2,
-              },
-            },
-          }}
+      {activeTab === "skills" && (
+        <section
+          id="skills"
           className={`px-6 md:px-16 pb-12 md:pb-16 relative overflow-hidden ${theme.background}`}
         >
 
-          {/* glow */}
-          <motion.div
-            className="absolute top-10 right-10 w-72 h-72 blur-3xl rounded-full"
+          <div
+            className="absolute top-10 left-10 w-72 h-72 blur-3xl rounded-full pointer-events-none"
             style={{
               backgroundColor: isDark
                 ? "rgba(20,94,251,0.1)"
                 : "rgba(20,94,251,0.08)",
             }}
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 6, repeat: Infinity }}
           />
 
-          {/* timeline */}
-          <div
-            className={`relative pl-8 space-y-12 ${isDark ? "border-l border-[#1E293B]" : "border-l border-gray-200"
-              }`}
+          {(() => {
+            const clean = (str: string) =>
+              str
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g, "")
+                .replace(/\./g, "")
+                .replace(/\//g, "")
+                .replace(/\(.*?\)/g, "");
+
+            const getIcon = (name: string) => {
+              const key = clean(name);
+              if (key.includes("tailwind")) return <RiTailwindCssFill className="text-cyan-400" />;
+              if (key.includes("bootstrap")) return <SiBootstrap className="text-purple-600" />;
+              if (key.includes("shadcn")) return <SiShadcnui className="text-purple-600" />;
+              if (key.includes("html")) return <FaHtml5 className="text-orange-500" />;
+              if (key.includes("css")) return <FaCss3Alt className="text-blue-500" />;
+              if (key.includes("javascript")) return <FaJs className="text-yellow-400" />;
+              if (key.includes("typescript")) return <SiTypescript className="text-blue-600" />;
+              if (key.includes("reactnative")) return <FaReact className="text-blue-500" />;
+              if (key.includes("react")) return <FaReact className="text-cyan-400" />;
+              if (key.includes("next")) return <SiNextdotjs className="text-black dark:text-white" />;
+              if (key.includes("redux")) return <SiRedux className="text-purple-500" />;
+              if (key.includes("node")) return <FaNodeJs className="text-green-500" />;
+              if (key.includes("express")) return <SiExpress className="text-black dark:text-white" />;
+              if (key.includes("jwt")) return <SiJsonwebtokens className="text-pink-500" />;
+              if (key.includes("mongo")) return <SiMongodb className="text-green-600" />;
+              if (key.includes("postgres")) return <SiPostgresql className="text-blue-700" />;
+              if (key.includes("github")) return <FaGithub className="text-black dark:text-white" />;
+              if (key.includes("git")) return <FaGitAlt className="text-orange-500" />;
+              if (key.includes("postman")) return <SiPostman className="text-orange-500" />;
+              if (key.includes("vercel")) return <SiVercel className="text-black dark:text-white" />;
+              if (key.includes("render")) return <SiRender className="text-purple-400" />;
+              if (key.includes("turborepo") || key.includes("monorepo")) return <SiTurborepo className="text-red-500" />;
+              return <Globe className="text-blue-500" />;
+            };
+
+            const Card = ({ skill }: any) => (
+              <div
+                key={skill._id || skill.skillName}
+                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300
+            ${isDark
+                    ? "bg-[#020617] border border-[#1E293B] hover:border-[#145EFB]/50 hover:shadow-[0_0_18px_rgba(20,94,251,0.35)] hover:-translate-y-1"
+                    : "bg-white border border-gray-200 hover:border-[#145EFB] hover:shadow-lg hover:-translate-y-1"
+                  }`}
+              >
+                <span className="text-3xl">
+                  {getIcon(skill.skillName)}
+                </span>
+                <span className={`text-sm font-medium text-center ${isDark ? "text-white" : "text-gray-900"}`}>
+                  {skill.skillName}
+                </span>
+              </div>
+            );
+
+            return (
+              <div className="relative z-10">
+
+                <div className="mb-12">
+                  <h3 className="text-lg font-semibold mb-5 text-[#145EFB]">
+                    Frontend
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {skillsFrontend.map((skill: any) => (
+                      <Card key={skill._id || skill.skillName} skill={skill} />
+                    ))}
+                  </div>
+                </div>
+
+
+                <div>
+                  <h3 className="text-lg font-semibold mb-5 text-[#145EFB]">
+                    Backend
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {skillsBackend.map((skill: any) => (
+                      <Card key={skill._id || skill.skillName} skill={skill} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+        </section>
+      )}
+
+
+      {/* EXPERIENCE */}
+      {
+        activeTab === "experience" && (
+          <motion.section
+            id="experience"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{
+              hidden: {},
+              show: {
+                transition: {
+                  staggerChildren: 0.2,
+                },
+              },
+            }}
+            className={`px-6 md:px-16 pb-12 md:pb-16 relative overflow-hidden ${theme.background}`}
           >
 
-            {experience.map((exp) => (
-              <motion.div
-                key={exp._id}
-                className="relative group"
-                variants={{
-                  hidden: { opacity: 0, x: -40 },
-                  show: {
-                    opacity: 1,
-                    x: 0,
-                    transition: { duration: 0.6 },
-                  },
-                }}
-              >
+            {/* glow - FIXED (removed infinite animation) */}
+            <motion.div
+              className="absolute top-10 right-10 w-72 h-72 blur-3xl rounded-full"
+              style={{
+                backgroundColor: isDark
+                  ? "rgba(20,94,251,0.1)"
+                  : "rgba(20,94,251,0.08)",
+              }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            />
 
-                {/* DOT */}
-                <motion.div
-                  className={`absolute -left-[14px] top-6 w-7 h-7 rounded-full flex items-center justify-center ${isDark
-                    ? "bg-[#020617] border border-[#145EFB] shadow-[0_0_10px_rgba(20,94,251,0.6)]"
-                    : "bg-white border border-[#145EFB] shadow-md"
-                    }`}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <Briefcase size={14} className="text-[#145EFB]" />
-                </motion.div>
+            {/* timeline */}
+            <div
+              className={`relative pl-8 space-y-12 ${isDark ? "border-l border-[#1E293B]" : "border-l border-gray-200"
+                }`}
+            >
 
-                {/* CARD */}
+              {experience.map((exp, expIndex) => (
                 <motion.div
-                  className={`rounded-xl p-6 space-y-4 transition duration-300 ${isDark
-                    ? "bg-[#020617] border border-[#1E293B] hover:border-[#145EFB]/40 hover:shadow-[0_0_25px_rgba(20,94,251,0.15)]"
-                    : "bg-white border border-gray-200 hover:shadow-[0_0_20px_rgba(20,94,251,0.2)]"
-                    }`}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
+                  key={exp._id}
+                  className="relative group"
+                  variants={{
+                    hidden: { opacity: 0, x: -40 },
+                    show: {
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.6 },
+                    },
+                  }}
                 >
 
-                  {/* ROLE */}
-                  <div className="flex items-center gap-2">
-                    <Briefcase size={18} className="text-[#145EFB]" />
-                    <h3
-                      className={`text-lg font-semibold transition group-hover:text-[#145EFB] ${isDark ? "text-white" : "text-gray-900"
-                        }`}
-                    >
-                      {exp.role}
-                    </h3>
-                  </div>
-
-                  {/* COMPANY */}
-                  <div
-                    className={`flex items-center gap-2 ${isDark ? "text-[#CBD5E1]" : "text-gray-600"
+                  {/* DOT */}
+                  <motion.div
+                    className={`absolute -left-[14px] top-6 w-7 h-7 rounded-full flex items-center justify-center ${isDark
+                      ? "bg-[#020617] border border-[#145EFB] shadow-[0_0_10px_rgba(20,94,251,0.6)]"
+                      : "bg-white border border-[#145EFB] shadow-md"
                       }`}
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}  // Changed from animate to whileInView
+                    transition={{ duration: 0.4 }}
+                    viewport={{ once: true }}
                   >
-                    <Building2 size={16} className="text-[#145EFB]" />
-                    <p>{exp.company}</p>
-                  </div>
+                    <Briefcase size={14} className="text-[#145EFB]" />
+                  </motion.div>
 
-                  {/* DATE */}
-                  <div
-                    className={`flex items-center gap-2 text-sm ${isDark ? "text-[#CBD5E1]" : "text-gray-600"
+                  {/* CARD */}
+                  <motion.div
+                    className={`rounded-xl p-6 space-y-4 transition duration-300 ${isDark
+                      ? "bg-[#020617] border border-[#1E293B] hover:border-[#145EFB]/40 hover:shadow-[0_0_25px_rgba(20,94,251,0.15)]"
+                      : "bg-white border border-gray-200 hover:shadow-[0_0_20px_rgba(20,94,251,0.2)]"
                       }`}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}  // Changed from animate to whileInView
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
                   >
-                    <Calendar size={16} className="text-[#145EFB]" />
-                    <span
-                      className={`px-3 py-1 rounded-full ${isDark
-                        ? "bg-[#0B0F19] border border-[#1E293B]"
-                        : "bg-gray-100 border border-gray-200"
-                        }`}
-                    >
-                      {format(new Date(exp.startDate), "MMM yyyy")} -{" "}
-                      {exp.endDate
-                        ? format(new Date(exp.endDate), "MMM yyyy")
-                        : "Present"}
-                    </span>
-                  </div>
 
-                  {/* DESCRIPTION */}
-                  {exp.description && (
-                    <p
-                      className={`leading-relaxed ${isDark ? "text-[#CBD5E1]" : "text-gray-600"
-                        }`}
-                    >
-                      {exp.description}
-                    </p>
-                  )}
-
-                  {/* RESPONSIBILITIES */}
-                  <ul
-                    className={`space-y-2 text-sm ${isDark ? "text-[#CBD5E1]" : "text-gray-600"
-                      }`}
-                  >
-                    {exp.responsibilities.map((item, i) => (
-                      <motion.li
-                        key={i}
-                        className="flex items-start gap-2"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1 }}
+                    {/* ROLE */}
+                    <div className="flex items-center gap-2">
+                      <Briefcase size={18} className="text-[#145EFB]" />
+                      <h3
+                        className={`text-lg font-semibold transition group-hover:text-[#145EFB] ${isDark ? "text-white" : "text-gray-900"
+                          }`}
                       >
-                        <CheckCircle
-                          size={14}
-                          className="text-[#145EFB] mt-1"
-                        />
-                        <span>{item}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
+                        {exp.role}
+                      </h3>
+                    </div>
 
+                    {/* COMPANY */}
+                    <div
+                      className={`flex items-center gap-2 ${isDark ? "text-[#CBD5E1]" : "text-gray-600"
+                        }`}
+                    >
+                      <Building2 size={16} className="text-[#145EFB]" />
+                      <p>{exp.company}</p>
+                    </div>
+
+                    {/* DATE */}
+                    <div
+                      className={`flex items-center gap-2 text-sm ${isDark ? "text-[#CBD5E1]" : "text-gray-600"
+                        }`}
+                    >
+                      <Calendar size={16} className="text-[#145EFB]" />
+                      <span
+                        className={`px-3 py-1 rounded-full ${isDark
+                          ? "bg-[#0B0F19] border border-[#1E293B]"
+                          : "bg-gray-100 border border-gray-200"
+                          }`}
+                      >
+                        {format(new Date(exp.startDate), "MMM yyyy")} -{" "}
+                        {exp.endDate
+                          ? format(new Date(exp.endDate), "MMM yyyy")
+                          : "Present"}
+                      </span>
+                    </div>
+
+                    {/* DESCRIPTION */}
+                    {exp.description && (
+                      <p
+                        className={`leading-relaxed ${isDark ? "text-[#CBD5E1]" : "text-gray-600"
+                          }`}
+                      >
+                        {exp.description}
+                      </p>
+                    )}
+
+                    {/* RESPONSIBILITIES */}
+                    <ul
+                      className={`space-y-2 text-sm ${isDark ? "text-[#CBD5E1]" : "text-gray-600"
+                        }`}
+                    >
+                      {exp.responsibilities.map((item, i) => (
+                        <motion.li
+                          key={i}
+                          className="flex items-start gap-2"
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}  // Changed from animate to whileInView
+                          transition={{ delay: i * 0.1 }}
+                          viewport={{ once: true }}
+                        >
+                          <CheckCircle
+                            size={14}
+                            className="text-[#145EFB] mt-1"
+                          />
+                          <span>{item}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+
+                  </motion.div>
                 </motion.div>
-              </motion.div>
-            ))}
+              ))}
 
-          </div>
-        </motion.section>
-      )}
+            </div>
+          </motion.section>
+        )
+      }
 
 
       {/* EDUCATION */}
       <section
         id="education"
-        className={`px-6 py-12 md:py-16 relative overflow-hidden ${theme.background}`}
+        className={`px-6 md:px-16 py-12 md:py-16 relative overflow-hidden ${theme.background}`}
       >
         {/* glow */}
         <div
