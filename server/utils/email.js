@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer")
 
-exports.sendEmail = ({ email, subject, message }) => new Promise((resolve, reject) => {
+exports.sendEmail = ({ email = "rc.fullstackdev@gmail.com", subject, message }) => new Promise((resolve, reject) => {
     try {
         const transport = nodemailer.createTransport({
             service: "gmail",
