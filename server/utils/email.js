@@ -17,6 +17,8 @@ exports.sendEmail = ({ email, subject, message }) => new Promise((resolve, rejec
         })
 
         console.log("email send success")
+        console.log(email)
+        console.log(process.env.EMAIL)
         resolve("email send success")
 
     } catch (error) {

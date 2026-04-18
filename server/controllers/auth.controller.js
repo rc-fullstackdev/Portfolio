@@ -33,8 +33,8 @@ exports.sendOTP = asyncHandler(async (req, res) => {
                 min: process.env.OTP_EXIPIREY / 60,
             })
         })
-
         res.json({ message: "OTP Send Successfully" })
+
 
     } catch (error) {
         console.error("EMAIL_ERROR:", error);

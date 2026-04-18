@@ -22,6 +22,7 @@ import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion"
 import ThemeToggle from "@/components/theme/ThemeToggle";
 import { useAppTheme } from "@/components/hooks/useAppTheme";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Page = () => {
   const [active, setActive] = useState("home");
@@ -343,17 +344,15 @@ const Page = () => {
 
 
       {/* ABOUT */}
-      <motion.section
+      {/* <motion.section
         id="about"
         className={`px-6 md:px-16 py-24 md:py-20 relative overflow-hidden ${theme.background}`}
       >
-        {/* background glow */}
+
         <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 blur-3xl rounded-full" />
 
-        {/* <div className="grid md:grid-cols-2 gap-16 items-stretch"> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-stretch">
 
-          {/* LEFT SIDE GRID (STAGGER ANIMATION) */}
           <motion.div
             className="grid grid-cols-2 gap-4 h-full auto-rows-fr order-2 md:order-1"
             initial="hidden"
@@ -408,7 +407,6 @@ const Page = () => {
                 >
                   <Icon style={{ color: theme.primary }} className="mb-2" />
                   <p className={`text-sm ${theme.mutedText}`}>{item.label}</p>
-                  {/* <p className={theme.text}>{item.value}</p> */}
                   <p className={`${theme.text} w-full text-center`}>
                     {item.label === "Email" && item.value ? (
                       (() => {
@@ -416,14 +414,14 @@ const Page = () => {
 
                         return (
                           <>
-                            {/* Mobile view */}
+
                             <span className="block sm:hidden">
                               {name}@
                               <br />
                               {domain}
                             </span>
 
-                            {/* Desktop view */}
+
                             <span className="hidden sm:inline">
                               {item.value}
                             </span>
@@ -438,7 +436,7 @@ const Page = () => {
               );
             })}
 
-            {/* LANGUAGES (full width card) */}
+
             <motion.div
               className={`p-4 rounded-xl border ${theme.border} ${theme.card} col-span-2 flex flex-col items-center justify-center text-center`}
               initial={{ opacity: 0, scale: 0.8 }}
@@ -455,7 +453,7 @@ const Page = () => {
 
           </motion.div>
 
-          {/* RIGHT SIDE (SLIDE UP DIFFERENT STYLE) */}
+
           <motion.div
             className="space-y-6 h-full flex flex-col justify-between order-1 md:order-2"
             initial={{ opacity: 0, y: 60 }}
@@ -476,7 +474,7 @@ const Page = () => {
                 About <span style={{ color: theme.primary }}>Me</span>
               </motion.h2>
 
-              {/* INTRO */}
+
               <motion.p
                 className={theme.mutedText + " leading-relaxed"}
                 initial={{ opacity: 0 }}
@@ -487,7 +485,7 @@ const Page = () => {
                 {about?.introduction}
               </motion.p>
 
-              {/* JOURNEY */}
+
               {about?.journey && (
                 <motion.div
                   className={`p-5 rounded-xl border ${theme.border} ${theme.card}`}
@@ -506,7 +504,6 @@ const Page = () => {
                 </motion.div>
               )}
 
-              {/* CURRENT WORK */}
               {about?.currentWork && (
                 <motion.div
                   className={`p-5 rounded-xl border ${theme.border} ${theme.card}`}
@@ -527,7 +524,7 @@ const Page = () => {
 
             </div>
 
-            {/* BUTTON */}
+
             <motion.a
               href="/Ravindra_Chaudhari_Resume.pdf"
               download="Ravindra_CV"
@@ -547,7 +544,218 @@ const Page = () => {
           </motion.div>
 
         </div>
+      </motion.section> */}
+
+
+      <motion.section
+        id="about"
+        className={`px-6 md:px-16 py-24 md:py-20 relative overflow-hidden ${theme.background}`}
+      >
+        {/* background glow */}
+        <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 blur-3xl rounded-full" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-stretch">
+
+          {/* LEFT SIDE */}
+          <motion.div
+            className="grid grid-cols-2 gap-4 h-full auto-rows-fr order-2 md:order-1"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={{
+              hidden: {},
+              show: {
+                transition: { staggerChildren: 0.12 },
+              },
+            }}
+          >
+
+            {[
+              { icon: MapPin, label: "Location", value: about?.location },
+              { icon: Mail, label: "Email", value: about?.email },
+              { icon: Phone, label: "Phone", value: about?.phone },
+              {
+                icon: Calendar,
+                label: "Date of Birth",
+                value:
+                  about?.dob && !isNaN(new Date(about.dob).getTime())
+                    ? format(new Date(about.dob), "do MMMM yyyy")
+                    : "—",
+              },
+            ].map((item, i) => {
+              const Icon = item.icon;
+
+              return (
+                <motion.div
+                  key={i}
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.8, y: 20 },
+                    show: { opacity: 1, scale: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Card
+                    className={`h-full flex flex-col items-center justify-center text-center p-4 rounded-xl transition-all
+              ${isDark
+                        ? "bg-[#020617]/60 backdrop-blur-xl border border-[#1E293B] hover:border-[#145EFB]/50"
+                        : "bg-white/60 backdrop-blur-xl border border-transparent hover:border-[#145EFB]"
+                      }`}
+                  >
+                    <CardContent className="p-0 flex flex-col items-center justify-center gap-1">
+                      <Icon style={{ color: theme.primary }} className="mb-2" />
+
+                      <p className={`text-sm ${theme.mutedText}`}>
+                        {item.label}
+                      </p>
+
+                      <p className={`${theme.text} text-center w-full`}>
+                        {item.label === "Email" && item.value ? (
+                          (() => {
+                            const [name, domain] = item.value.split("@");
+
+                            return (
+                              <>
+                                <span className="block sm:hidden">
+                                  {name}@<br />
+                                  {domain}
+                                </span>
+                                <span className="hidden sm:inline">
+                                  {item.value}
+                                </span>
+                              </>
+                            );
+                          })()
+                        ) : (
+                          item.value
+                        )}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              );
+            })}
+
+            {/* LANGUAGES */}
+            <motion.div
+              className="col-span-2"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <Card
+                className={`h-full flex flex-col items-center justify-center text-center p-4 rounded-xl transition-all
+              ${isDark
+                    ? "bg-[#020617]/60 backdrop-blur-xl border border-[#1E293B] hover:border-[#145EFB]/50"
+                    : "bg-white/60 backdrop-blur-xl border border-transparent hover:border-[#145EFB]"
+                  }`}
+              >
+                <CardContent className="p-0 flex flex-col items-center justify-center gap-1">
+                  <Globe style={{ color: theme.primary }} className="mb-2" />
+
+                  <p className={`text-sm ${theme.mutedText}`}>
+                    Languages
+                  </p>
+
+                  <p className={theme.text}>
+                    {about?.languages?.join(", ")}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+          </motion.div>
+
+          {/* RIGHT SIDE */}
+          <motion.div
+            className="space-y-6 h-full flex flex-col justify-between order-1 md:order-2"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+
+            <div className="space-y-6">
+
+              <motion.h2
+                className={`text-4xl font-bold ${theme.text}`}
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                viewport={{ once: true }}
+              >
+                About <span style={{ color: theme.primary }}>Me</span>
+              </motion.h2>
+
+              <motion.p
+                className={theme.mutedText + " leading-relaxed"}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.9 }}
+                viewport={{ once: true }}
+              >
+                {about?.introduction}
+              </motion.p>
+
+              {about?.journey && (
+                <Card
+                  className={`p-5 backdrop-blur-xl bg-white/60 dark:bg-[#020617]/60 border transition-all
+                   ${isDark ? "border-[#1E293B]" : "border-transparent"} 
+                   hover:border-[#145EFB]/50 hover:shadow-[0_0_18px_rgba(20,94,251,0.25)]`}
+                >
+                  <CardContent className="p-0">
+                    <h3 className={`font-semibold mb-2 flex items-center gap-2 ${theme.text}`}>
+                      <Briefcase size={18} style={{ color: theme.primary }} />
+                      My Journey
+                    </h3>
+                    <p className={`text-sm ${theme.mutedText}`}>
+                      {about?.journey}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {about?.currentWork && (
+                <Card
+                  className={`p-5 backdrop-blur-xl bg-white/60 dark:bg-[#020617]/60 border transition-all
+    ${isDark ? "border-[#1E293B]" : "border-transparent"} 
+    hover:border-[#145EFB]/50 hover:shadow-[0_0_18px_rgba(20,94,251,0.25)]`}
+                >
+                  <CardContent className="p-0">
+                    <h3 className={`font-semibold mb-2 flex items-center gap-2 ${theme.text}`}>
+                      <Briefcase size={18} style={{ color: theme.primary }} />
+                      Current Work
+                    </h3>
+                    <p className={`text-sm ${theme.mutedText}`}>
+                      {about?.currentWork}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+
+            </div>
+
+            <motion.a
+              href="/Ravindra_Chaudhari_Resume.pdf"
+              download="Ravindra_CV"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <Button
+                className="w-full py-5 rounded-md text-white cursor-pointer"
+                style={{ backgroundColor: theme.primary }}
+              >
+                Download CV
+              </Button>
+            </motion.a>
+
+          </motion.div>
+
+        </div>
       </motion.section>
+
 
 
       {/* SHOWCASE */}
@@ -1012,7 +1220,6 @@ const Page = () => {
         </motion.section>
       )} */}
 
-
       {activeTab === "skills" && (
         <section
           id="skills"
@@ -1061,27 +1268,32 @@ const Page = () => {
               if (key.includes("postman")) return <SiPostman className="text-orange-500" />;
               if (key.includes("vercel")) return <SiVercel className="text-black dark:text-white" />;
               if (key.includes("render")) return <SiRender className="text-purple-400" />;
-              if (key.includes("turborepo") || key.includes("monorepo")) return <SiTurborepo className="text-red-500" />;
+              if (key.includes("turborepo") || key.includes("monorepo"))
+                return <SiTurborepo className="text-red-500" />;
               return <Globe className="text-blue-500" />;
             };
 
-            const Card = ({ skill }: any) => (
-              <div
-                key={skill._id || skill.skillName}
-                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300
-            ${isDark
-                    ? "bg-[#020617] border border-[#1E293B] hover:border-[#145EFB]/50 hover:shadow-[0_0_18px_rgba(20,94,251,0.35)] hover:-translate-y-1"
-                    : "bg-white border border-gray-200 hover:border-[#145EFB] hover:shadow-lg hover:-translate-y-1"
-                  }`}
-              >
-                <span className="text-3xl">
-                  {getIcon(skill.skillName)}
-                </span>
-                <span className={`text-sm font-medium text-center ${isDark ? "text-white" : "text-gray-900"}`}>
-                  {skill.skillName}
-                </span>
-              </div>
-            );
+            const SkillCard = ({ skill }: any) => {
+              return (
+                <Card
+                  className={`transition-all duration-300 cursor-pointer hover:-translate-y-1
+                    ${isDark
+                      ? "bg-[#020617]/60 backdrop-blur-xl border border-[#1E293B] hover:border-[#145EFB]/50 hover:shadow-[0_0_18px_rgba(20,94,251,0.35)]"
+                      : "bg-white/60 backdrop-blur-xl border border-transparent hover:border-[#145EFB] hover:shadow-lg"
+                    }`}
+                >
+                  <CardContent className="flex flex-col items-center justify-center gap-2 p-4">
+                    <span className="text-3xl">{getIcon(skill.skillName)}</span>
+                    <span
+                      className={`text-sm font-medium text-center ${isDark ? "text-white" : "text-gray-900"
+                        }`}
+                    >
+                      {skill.skillName}
+                    </span>
+                  </CardContent>
+                </Card>
+              );
+            };
 
             return (
               <div className="relative z-10">
@@ -1090,9 +1302,10 @@ const Page = () => {
                   <h3 className="text-lg font-semibold mb-5 text-[#145EFB]">
                     Frontend
                   </h3>
+
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {skillsFrontend.map((skill: any) => (
-                      <Card key={skill._id || skill.skillName} skill={skill} />
+                      <SkillCard key={skill._id || skill.skillName} skill={skill} />
                     ))}
                   </div>
                 </div>
@@ -1102,9 +1315,10 @@ const Page = () => {
                   <h3 className="text-lg font-semibold mb-5 text-[#145EFB]">
                     Backend
                   </h3>
+
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {skillsBackend.map((skill: any) => (
-                      <Card key={skill._id || skill.skillName} skill={skill} />
+                      <SkillCard key={skill._id || skill.skillName} skill={skill} />
                     ))}
                   </div>
                 </div>
