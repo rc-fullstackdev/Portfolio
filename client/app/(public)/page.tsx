@@ -1017,7 +1017,8 @@ const Page = () => {
         </motion.section>
       )} */}
 
-      {/* {activeTab === "skills" && (
+
+      {activeTab === "skills" && (
         <section
           id="skills"
           className={`px-6 md:px-16 pb-12 md:pb-16 relative overflow-hidden ${theme.background}`}
@@ -1026,131 +1027,13 @@ const Page = () => {
           <div
             className="absolute top-10 left-10 w-72 h-72 blur-3xl rounded-full pointer-events-none"
             style={{
-              backgroundColor: isDark
-                ? "rgba(20,94,251,0.1)"
-                : "rgba(20,94,251,0.08)",
-            }}
-          />
-
-          {(() => {
-            const clean = (str: string) =>
-              str
-                .toLowerCase()
-                .trim()
-                .replace(/\s+/g, "")
-                .replace(/\./g, "")
-                .replace(/\//g, "")
-                .replace(/\(.*?\)/g, "");
-
-            const getIcon = (name: string) => {
-              const key = clean(name);
-              if (key.includes("tailwind")) return <RiTailwindCssFill className="text-cyan-400" />;
-              if (key.includes("bootstrap")) return <SiBootstrap className="text-purple-600" />;
-              if (key.includes("shadcn")) return <SiShadcnui className="text-purple-600" />;
-              if (key.includes("html")) return <FaHtml5 className="text-orange-500" />;
-              if (key.includes("css")) return <FaCss3Alt className="text-blue-500" />;
-              if (key.includes("javascript")) return <FaJs className="text-yellow-400" />;
-              if (key.includes("typescript")) return <SiTypescript className="text-blue-600" />;
-              if (key.includes("reactnative")) return <FaReact className="text-blue-500" />;
-              if (key.includes("react")) return <FaReact className="text-cyan-400" />;
-              if (key.includes("next")) return <SiNextdotjs className="text-black dark:text-white" />;
-              if (key.includes("redux")) return <SiRedux className="text-purple-500" />;
-              if (key.includes("node")) return <FaNodeJs className="text-green-500" />;
-              if (key.includes("express")) return <SiExpress className="text-black dark:text-white" />;
-              if (key.includes("jwt")) return <SiJsonwebtokens className="text-pink-500" />;
-              if (key.includes("mongo")) return <SiMongodb className="text-green-600" />;
-              if (key.includes("postgres")) return <SiPostgresql className="text-blue-700" />;
-              if (key.includes("github")) return <FaGithub className="text-black dark:text-white" />;
-              if (key.includes("git")) return <FaGitAlt className="text-orange-500" />;
-              if (key.includes("postman")) return <SiPostman className="text-orange-500" />;
-              if (key.includes("vercel")) return <SiVercel className="text-black dark:text-white" />;
-              if (key.includes("render")) return <SiRender className="text-purple-400" />;
-              if (key.includes("turborepo") || key.includes("monorepo"))
-                return <SiTurborepo className="text-red-500" />;
-              return <Globe className="text-blue-500" />;
-            };
-
-            const SkillCard = ({ skill }: any) => {
-              return (
-                <Card
-                  className={`transition-all duration-300 cursor-pointer hover:-translate-y-1
-                    ${isDark
-                      ? "bg-[#020617]/60 backdrop-blur-xl border border-[#1E293B] hover:border-[#145EFB]/50 hover:shadow-[0_0_18px_rgba(20,94,251,0.35)]"
-                      : "bg-white/60 backdrop-blur-xl border border-transparent hover:border-[#145EFB] hover:shadow-lg"
-                    }`}
-                >
-                  <CardContent className="flex flex-col items-center justify-center gap-2 p-4">
-                    <span className="text-3xl">{getIcon(skill.skillName)}</span>
-                    <span
-                      className={`text-sm font-medium text-center ${isDark ? "text-white" : "text-gray-900"
-                        }`}
-                    >
-                      {skill.skillName}
-                    </span>
-                  </CardContent>
-                </Card>
-              );
-            };
-
-            return (
-              <div className="relative z-10">
-
-                <div className="mb-12">
-                  <h3 className="text-lg font-semibold mb-5 text-[#145EFB]">
-                    Frontend
-                  </h3>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    {skillsFrontend.map((skill: any) => (
-                      <SkillCard key={skill._id || skill.skillName} skill={skill} />
-                    ))}
-                  </div>
-                </div>
-
-
-                <div>
-                  <h3 className="text-lg font-semibold mb-5 text-[#145EFB]">
-                    Backend
-                  </h3>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    {skillsBackend.map((skill: any) => (
-                      <SkillCard key={skill._id || skill.skillName} skill={skill} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
-        </section>
-      )} */}
-
-      {activeTab === "skills" && (
-        <motion.section
-          key="skills-section"
-          id="skills"
-          initial="hidden"
-          animate="visible"
-          className={`px-6 md:px-16 pb-12 md:pb-16 relative overflow-hidden ${theme.background}`}
-        >
-          {/* Background Blob */}
-          <div
-            className="absolute top-10 left-10 w-72 h-72 blur-3xl rounded-full pointer-events-none"
-            style={{
               backgroundColor: isDark ? "rgba(20,94,251,0.1)" : "rgba(20,94,251,0.08)",
             }}
           />
 
           {(() => {
-            // 1. ALL HELPER FUNCTIONS RESTORED
             const clean = (str: string) =>
-              str
-                .toLowerCase()
-                .trim()
-                .replace(/\s+/g, "")
-                .replace(/\./g, "")
-                .replace(/\//g, "")
-                .replace(/\(.*?\)/g, "");
+              str.toLowerCase().trim().replace(/\s+/g, "").replace(/\./g, "").replace(/\//g, "").replace(/\(.*?\)/g, "");
 
             const getIcon = (name: string) => {
               const key = clean(name);
@@ -1175,41 +1058,50 @@ const Page = () => {
               if (key.includes("postman")) return <SiPostman className="text-orange-500" />;
               if (key.includes("vercel")) return <SiVercel className="text-black dark:text-white" />;
               if (key.includes("render")) return <SiRender className="text-purple-400" />;
-              if (key.includes("turborepo") || key.includes("monorepo"))
-                return <SiTurborepo className="text-red-500" />;
+              if (key.includes("turborepo") || key.includes("monorepo")) return <SiTurborepo className="text-red-500" />;
               return <Globe className="text-blue-500" />;
             };
 
-            // 2. ANIMATION SETTINGS
+
             const containerVars: Variants = {
               hidden: { opacity: 0 },
               visible: {
                 opacity: 1,
-                transition: { staggerChildren: 0.06, delayChildren: 0.1 }
+                transition: {
+                  staggerChildren: 0.15,
+                  delayChildren: 0.2
+                }
               }
             };
 
             const itemVars: Variants = {
-              hidden: { opacity: 0, y: 20, scale: 0.9 },
+              hidden: { opacity: 0, y: 40, scale: 0.9 },
               visible: {
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                transition: { type: "spring", stiffness: 260, damping: 20 }
+                transition: {
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15,
+                  duration: 0.8
+                }
               }
             };
 
             return (
               <div className="relative z-10">
-                {/* Frontend Section */}
-                <div className="mb-12">
+                <motion.div
+                  className="mb-12"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  variants={containerVars}
+                >
                   <motion.h3 variants={itemVars} className="text-lg font-semibold mb-5 text-[#145EFB]">
                     Frontend
                   </motion.h3>
-                  <motion.div
-                    variants={containerVars}
-                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
-                  >
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {skillsFrontend.map((skill: any) => (
                       <motion.div key={skill._id || skill.skillName} variants={itemVars}>
                         <Card
@@ -1228,18 +1120,20 @@ const Page = () => {
                         </Card>
                       </motion.div>
                     ))}
-                  </motion.div>
-                </div>
+                  </div>
+                </motion.div>
 
-                {/* Backend Section */}
-                <div>
+
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  variants={containerVars}
+                >
                   <motion.h3 variants={itemVars} className="text-lg font-semibold mb-5 text-[#145EFB]">
                     Backend
                   </motion.h3>
-                  <motion.div
-                    variants={containerVars}
-                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
-                  >
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {skillsBackend.map((skill: any) => (
                       <motion.div key={skill._id || skill.skillName} variants={itemVars}>
                         <Card
@@ -1258,13 +1152,14 @@ const Page = () => {
                         </Card>
                       </motion.div>
                     ))}
-                  </motion.div>
-                </div>
+                  </div>
+                </motion.div>
               </div>
             );
           })()}
-        </motion.section>
+        </section>
       )}
+
 
       {/* EXPERIENCE */}
       {
