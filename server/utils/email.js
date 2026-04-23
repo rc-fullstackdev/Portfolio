@@ -3,6 +3,9 @@ const nodemailer = require("nodemailer")
 exports.sendEmail = ({ email = "rc.fullstackdev@gmail.com", subject, message }) => new Promise((resolve, reject) => {
     try {
         const transport = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
             service: "gmail",
             auth: {
                 user: process.env.EMAIL,
