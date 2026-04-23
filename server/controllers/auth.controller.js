@@ -54,16 +54,18 @@ exports.verifyOTP = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: "Admin Not Found" })
     }
 
+    if (differenceInSeconds(new Date(), new Date(result.otpSendOn)) > process.env.OTP_EXIPIREY) {
+        await User.findByIdAndUpdate(result._id, { otp: null, otpSendOn: null })
+        return res.status(400).json({ message: "otp expired" })
+    }
+
     const verify = await bcrypt.compare(otp, result.otp)
 
     if (!verify) {
         return res.status(400).json({ message: "invalid otp" })
     }
 
-    if (differenceInSeconds(new Date(), new Date(result.otpSendOn)) > process.env.OTP_EXIPIREY) {
-        await User.findByIdAndUpdate(result._id, { otp: null })
-        return res.status(400).json({ message: "otp expired" })
-    }
+    await User.findByIdAndUpdate(result._id, { otp: null, otpSendOn: null })
 
     const token = jwt.sign({ _id: result._id }, process.env.JWT_KEY, { expiresIn: "1h" })
 

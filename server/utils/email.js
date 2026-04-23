@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer")
 exports.sendEmail = ({ email = "rc.fullstackdev@gmail.com", subject, message }) => new Promise((resolve, reject) => {
     try {
         const transport = nodemailer.createTransport({
+            //👇 when email not send on live add this three line above services
             host: "smtp.gmail.com",
             port: 465,
             secure: true,
