@@ -17,7 +17,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
     const { pathname, searchParams } = req.nextUrl
     const token = req.cookies.get("ADMIN")
 
