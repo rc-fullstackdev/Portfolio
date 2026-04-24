@@ -17,19 +17,19 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 
-export function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
     const { pathname, searchParams } = req.nextUrl
     const token = req.cookies.get("ADMIN")
 
     if (pathname.startsWith('/admin') && !token) {
-        return NextResponse.rewrite(new URL('/404', req.url))
+        return NextResponse.redirect(new URL('/404', req.url))
     }
 
     if (pathname === '/login') {
         const secret = searchParams.get('secret')
 
         if (secret !== 'true') {
-            return NextResponse.rewrite(new URL('/404', req.url))
+            return NextResponse.redirect(new URL('/404', req.url))
         }
     }
 
