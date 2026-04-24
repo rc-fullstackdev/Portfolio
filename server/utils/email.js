@@ -53,7 +53,6 @@ exports.sendEmail = ({ email, subject, message }) => new Promise(async (resolve,
             html: message
         });
 
-        console.log("Email Sent Successfully:", info.response);
         resolve("email send success");
 
     } catch (error) {
