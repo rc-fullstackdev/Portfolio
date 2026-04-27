@@ -69,12 +69,14 @@ exports.verifyOTP = asyncHandler(async (req, res) => {
 
     const token = jwt.sign({ _id: result._id }, process.env.JWT_KEY, { expiresIn: "1h" })
 
-    const isProduction = process.env.NODE_ENV === PRODUCTION || process.env.VERCEL_ENV === "production";
+    const isProduction = process.env.NODE_ENV === PRODUCTION
 
     res.cookie("ADMIN", token, {
         httpOnly: true,
-        secure: isProduction ? true : false,
+        // secure: isProduction ? true : false,
+        secure: isProduction,
         sameSite: isProduction ? "none" : "lax",
+        path: "/",
         maxAge: 1000 * 60 * 60
     })
 
