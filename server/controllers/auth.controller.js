@@ -73,10 +73,8 @@ exports.verifyOTP = asyncHandler(async (req, res) => {
 
     res.cookie("ADMIN", token, {
         httpOnly: true,
-        // secure: isProduction ? true : false,
-        secure: isProduction,
+        secure: isProduction ? true : false,
         sameSite: isProduction ? "none" : "lax",
-        path: "/",
         maxAge: 1000 * 60 * 60
     })
 

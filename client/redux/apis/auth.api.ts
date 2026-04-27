@@ -8,7 +8,8 @@ export const authApi = createApi({
     reducerPath: "authApi",
     // baseQuery: fetchBaseQuery({ baseUrl: `${APP_URL}/api/auth`, credentials: "include" }),
     baseQuery: createAutoLogoutBaseQuery({
-        baseUrl: `${APP_URL}/api/auth`,
+        // baseUrl: `${APP_URL}/api/auth`,
+        baseUrl: `/api/auth`,
         redirectPath: "/login"
     }),
     tagTypes: ["auth"],
