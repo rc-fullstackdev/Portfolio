@@ -4,6 +4,7 @@ const Experiences = require("../models/Experiences")
 const Projects = require("../models/Projects")
 const About = require("../models/About")
 const Education = require("../models/Education")
+const Contact = require("../models/Contact")
 
 // skills section start
 exports.addSkills = asyncHandler(async (req, res) => {
@@ -321,3 +322,14 @@ exports.getDashboardStats = asyncHandler(async (req, res) => {
 })
 
 // contact section start
+exports.getContactInfo = asyncHandler(async (req, res) => {
+    const result = await Contact.find()
+    res.json({ message: "Contact Information Get Successfully", result })
+})
+
+exports.deleteContactInfo = asyncHandler(async (req, res) => {
+    const { cid } = req.params
+    await Contact.findByIdAndDelete(cid)
+    res.json({ message: "Contact Information Deleted Successfully" })
+})
+

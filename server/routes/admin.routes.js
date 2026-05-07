@@ -32,8 +32,13 @@ router
     .patch("/update-education-info/:eid", admin.updateEducationInfo)
     .delete("/delete-education-info/:eid", admin.deleteEducationInfo)
 
+    // contact section
+    .get("/contact-info", admin.getContactInfo)
+    .delete("/delete-contact-info/:cid", admin.deleteContactInfo)
 
     // status section 
     .get("/dashboard-stats", admin.getDashboardStats)
+
+
 
 module.exports = router

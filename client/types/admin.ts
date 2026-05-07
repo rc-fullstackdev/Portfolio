@@ -226,13 +226,14 @@ export type CONTACT = {
 }
 
 export type ADD_CONTACT_INFO_REQUEST = CONTACT
-export type ADD_CONTACT_INFO_RESPONSE = { message: string }
 
-export type GET_CONTACT_INFO_REQUEST = void
 export type GET_CONTACT_INFO_RESPONSE = {
     message: string,
     result: CONTACT[]
 }
 
+export type DELETE_CONTACT_INFO_REQUEST = {
+    _id: string
+}
 
 

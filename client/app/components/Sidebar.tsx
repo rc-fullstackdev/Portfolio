@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Menu, X, BookOpen, Briefcase, Folder, Grid, User, GraduationCap } from "lucide-react";
+import { Menu, X, BookOpen, Briefcase, Folder, Grid, User, GraduationCap, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
@@ -24,6 +24,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         { id: 4, label: "Experience", path: "/admin/experience", icon: Briefcase },
         { id: 5, label: "About", path: "/admin/about", icon: User },
         { id: 6, label: "Education", path: "/admin/education", icon: GraduationCap },
+        { id: 6, label: "Contact", path: "/admin/contact", icon: MessageSquare },
     ];
 
     const getPageTitle = () => {
