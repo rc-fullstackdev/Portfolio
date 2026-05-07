@@ -23,8 +23,6 @@ exports.sendOTP = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(admin._id, { otp: hashOTP, otpSendOn: new Date() })
 
     try {
-        console.log("auth", admin.email);
-
         await sendEmail({
             email: admin.email,
             subject: "Login OTP",

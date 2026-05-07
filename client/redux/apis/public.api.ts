@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { createAutoLogoutBaseQuery } from "./createAutoLogoutBaseQuery"
 import { APP_URL } from "@/constants/config"
-import { GET_EDUCATION_RESPONSE, GET_EXPERIENCE_RESPONSE, GET_PROJECT_RESPONSE, GET_SKILLS_RESPONSE, READ_ABOUT_INFO_RESPONSE } from "@/types/admin"
+import { ADD_CONTACT_INFO_REQUEST, ADD_CONTACT_INFO_RESPONSE, GET_EDUCATION_RESPONSE, GET_EXPERIENCE_RESPONSE, GET_PROJECT_RESPONSE, GET_SKILLS_RESPONSE, READ_ABOUT_INFO_RESPONSE } from "@/types/admin"
 
 export const publicApi = createApi({
     reducerPath: "api",
     baseQuery: createAutoLogoutBaseQuery({
-        baseUrl: `${APP_URL}/api/public`,
+        baseUrl: `/api/public`,
         redirectPath: "/login"
     }),
     tagTypes: ["public"],
@@ -61,6 +61,17 @@ export const publicApi = createApi({
                 },
                 providesTags: ["public"]
             }),
+
+            addContactInfo: builder.mutation<ADD_CONTACT_INFO_RESPONSE, ADD_CONTACT_INFO_REQUEST>({
+                query: contactData => {
+                    return {
+                        url: "/add-public-contact-info",
+                        method: "POST",
+                        body: contactData
+                    }
+                },
+                invalidatesTags: ["public"]
+            }),
         }
     }
 })
@@ -71,4 +82,5 @@ export const {
     useGetPublicProjectsQuery,
     useReadPublicAboutInfoQuery,
     useGetPublicEducationInfoQuery,
+    useAddContactInfoMutation
 } = publicApi

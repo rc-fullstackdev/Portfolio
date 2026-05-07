@@ -213,3 +213,26 @@ export type GET_DASHBOARD_STATS_RESPONSE = {
         skillsCount: number
     }
 }
+
+
+export type CONTACT = {
+    _id?: string
+    name: string
+    email: string
+    phone: string
+    subject: string
+    message: string
+    createdAt?: string
+}
+
+export type ADD_CONTACT_INFO_REQUEST = CONTACT
+export type ADD_CONTACT_INFO_RESPONSE = { message: string }
+
+export type GET_CONTACT_INFO_REQUEST = void
+export type GET_CONTACT_INFO_RESPONSE = {
+    message: string,
+    result: CONTACT[]
+}
+
+
+

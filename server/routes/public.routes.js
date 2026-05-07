@@ -7,5 +7,6 @@ router
     .get("/get-public-projects", public.getPublicProjects)
     .get("/read-public-about-info", public.ReadPublicAboutInfo)
     .get("/get-public-education-info", public.getPublicEducationInfo)
+    .post("/add-public-contact-info", public.addContactInfo)
 
 module.exports = router

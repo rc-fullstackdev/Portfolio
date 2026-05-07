@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  useAddContactInfoMutation,
   useGetPublicEducationInfoQuery,
   useGetPublicExperienceQuery,
   useGetPublicProjectsQuery,
@@ -19,10 +20,15 @@ import { RiTailwindCssFill } from "react-icons/ri";
 
 import { Mail, Phone, MapPin, Calendar, Globe, Briefcase } from "lucide-react";
 import { format } from "date-fns";
-import { AnimatePresence, motion, Variants } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import ThemeToggle from "@/components/theme/ThemeToggle";
 import { useAppTheme } from "@/components/hooks/useAppTheme";
 import { Card, CardContent } from "@/components/ui/card";
+import { ADD_CONTACT_INFO_REQUEST } from "@/types/admin";
+import { zodResolver } from "@hookform/resolvers/zod";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const Page = () => {
   const [active, setActive] = useState("home");
@@ -38,6 +44,7 @@ const Page = () => {
   const { data: projectData } = useGetPublicProjectsQuery();
   const { data: aboutData } = useReadPublicAboutInfoQuery();
   const { data: educationData } = useGetPublicEducationInfoQuery();
+  const [addContact, { isLoading }] = useAddContactInfoMutation()
 
   const skillsFrontend = skillsData?.frontend || [];
   const skillsBackend = skillsData?.backend || [];
@@ -45,6 +52,20 @@ const Page = () => {
   const projects = projectData?.result || [];
   const education = educationData?.result || [];
   const about = aboutData?.result;
+
+
+  const contactSchema = z.object({
+    name: z.string().min(3),
+    email: z.string().min(3),
+    phone: z.string().min(3),
+    subject: z.string().min(3),
+    message: z.string().min(3)
+  }) satisfies z.ZodType<ADD_CONTACT_INFO_REQUEST>
+
+  const { register, reset, handleSubmit, formState: { errors, dirtyFields } } = useForm<ADD_CONTACT_INFO_REQUEST>({
+    resolver: zodResolver(contactSchema)
+  })
+
 
   const titles = [
     "Frontend Developer",
@@ -94,6 +115,18 @@ const Page = () => {
 
     return () => clearTimeout(timer);
   }, [clickCount]);
+
+
+  const handleFormsubmit = async (data: ADD_CONTACT_INFO_REQUEST) => {
+    try {
+      await addContact(data).unwrap();
+      toast.success("Message Sent Successfully")
+      reset()
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to add contact information")
+    }
+  };
 
 
   return (
@@ -1542,67 +1575,104 @@ const Page = () => {
           </div>
 
           {/* RIGHT SIDE FORM */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="relative"
+          <div
+            className={`relative rounded-2xl p-8 ${isDark
+              ? "bg-[#020617] border border-[#1E293B]"
+              : "bg-white border border-gray-200 shadow-xl"
+              }`}
           >
+            {/* The form needs its own space-y to create gaps between rows */}
+            <form onSubmit={handleSubmit(handleFormsubmit)} className="space-y-5 relative z-10">
 
-            {/* glow */}
-            <div
-              className={`absolute inset-0 blur-2xl opacity-20 rounded-2xl ${isDark ? "bg-[#145EFB]/20" : "bg-[#145EFB]/10"
-                }`}
-            />
-
-            <div
-              className={`relative rounded-2xl p-8 space-y-5 ${isDark
-                ? "bg-[#020617] border border-[#1E293B]"
-                : "bg-white border border-gray-200 shadow-xl"
-                }`}
-            >
-
+              {/* NAME */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
                 viewport={{ once: true }}
               >
-                <Input placeholder="Your Name" className="h-12" />
+                <Input
+                  {...register("name")}
+                  placeholder="Your Name"
+                  className="h-12"
+                />
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                <Input placeholder="Your Email" className="h-12" />
-              </motion.div>
+              {/* EMAIL & PHONE GRID */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  <Input
+                    {...register("email")}
+                    placeholder="Your Email"
+                    type="email"
+                    className="h-12"
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25 }}
+                  viewport={{ once: true }}
+                >
+                  <Input
+                    {...register("phone")}
+                    placeholder="Phone Number (Optional)"
+                    type="number"
+                    className="h-12"
+                  />
+                </motion.div>
+              </div>
 
+              {/* SUBJECT */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 viewport={{ once: true }}
               >
-                <Textarea placeholder="Your Message" className="min-h-[120px]" />
+                <Input
+                  {...register("subject")}
+                  placeholder="Subject"
+                  className="h-12"
+                />
               </motion.div>
 
+              {/* MESSAGE */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 viewport={{ once: true }}
               >
-                <Button className="w-full h-12 bg-[#145EFB] text-white">
+                <Textarea
+                  {...register("message")}
+                  placeholder="How can I help you?"
+                  className="min-h-[120px]"
+                />
+              </motion.div>
+
+              {/* SUBMIT BUTTON */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <Button
+                  disabled={isLoading}
+                  type="submit"
+                  className="w-full h-12 cursor-pointer bg-[#145EFB] hover:bg-[#145EFB]/90 text-white font-semibold shadow-lg shadow-[#145EFB]/20"
+                >
                   Send Message
                 </Button>
               </motion.div>
-
-            </div>
-          </motion.div>
+            </form>
+          </div>
 
         </div>
       </motion.section>
@@ -1612,3 +1682,4 @@ const Page = () => {
 };
 
 export default Page;
+
